@@ -180,3 +180,7 @@ export function buildXaiModelDefinition(): ModelDefinitionConfig {
     maxTokens: XAI_DEFAULT_MAX_TOKENS,
   };
 }
+
+export const NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1";
+export const NVIDIA_DEFAULT_MODEL_ID = "nvidia/llama-3.1-nemotron-70b-instruct";
+export const NVIDIA_DEFAULT_MODEL_REF = `nvidia/${NVIDIA_DEFAULT_MODEL_ID}`;

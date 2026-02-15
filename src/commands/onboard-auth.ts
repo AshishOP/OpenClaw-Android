@@ -25,6 +25,8 @@ export {
   applySyntheticProviderConfig,
   applyTogetherConfig,
   applyTogetherProviderConfig,
+  applyNvidiaConfig,
+  applyNvidiaProviderConfig,
   applyVeniceConfig,
   applyVeniceProviderConfig,
   applyVercelAiGatewayConfig,
@@ -68,6 +70,7 @@ export {
   setSyntheticApiKey,
   setTogetherApiKey,
   setHuggingfaceApiKey,
+  setNvidiaApiKey,
   setVeniceApiKey,
   setVercelAiGatewayApiKey,
   setXiaomiApiKey,
@@ -80,6 +83,7 @@ export {
   ZAI_DEFAULT_MODEL_REF,
   TOGETHER_DEFAULT_MODEL_REF,
   XAI_DEFAULT_MODEL_REF,
+  NVIDIA_DEFAULT_MODEL_REF,
 } from "./onboard-auth.credentials.js";
 export {
   buildMinimaxApiModelDefinition,

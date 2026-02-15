@@ -46,6 +46,7 @@ export type AuthChoice =
   | "qwen-portal"
   | "xai-api-key"
   | "qianfan-api-key"
+  | "nvidia-api-key"
   | "custom-api-key"
   | "skip";
 export type AuthChoiceGroupId =
@@ -71,6 +72,7 @@ export type AuthChoiceGroupId =
   | "huggingface"
   | "qianfan"
   | "xai"
+  | "nvidia"
   | "custom";
 export type GatewayAuthChoice = "token" | "password";
 export type ResetScope = "config" | "config+creds+sessions" | "full";

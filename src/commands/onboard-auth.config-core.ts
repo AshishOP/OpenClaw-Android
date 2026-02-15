@@ -8,6 +8,7 @@ import {
 import {
   buildQianfanProvider,
   buildXiaomiProvider,
+  buildNvidiaProvider,
   QIANFAN_DEFAULT_MODEL_ID,
   XIAOMI_DEFAULT_MODEL_ID,
 } from "../agents/models-config.providers.js";
@@ -35,6 +36,7 @@ import {
   XIAOMI_DEFAULT_MODEL_REF,
   ZAI_DEFAULT_MODEL_REF,
   XAI_DEFAULT_MODEL_REF,
+  NVIDIA_DEFAULT_MODEL_REF,
 } from "./onboard-auth.credentials.js";
 export {
   applyCloudflareAiGatewayConfig,
@@ -70,6 +72,8 @@ import {
   resolveZaiBaseUrl,
   XAI_BASE_URL,
   XAI_DEFAULT_MODEL_ID,
+  NVIDIA_BASE_URL,
+  NVIDIA_DEFAULT_MODEL_ID,
 } from "./onboard-auth.models.js";
 
 export function applyZaiProviderConfig(
@@ -650,6 +654,45 @@ export function applyQianfanConfig(cfg: OpenClawConfig): OpenClawConfig {
               }
             : undefined),
           primary: QIANFAN_DEFAULT_MODEL_REF,
+        },
+      },
+    },
+  };
+}
+
+export function applyNvidiaProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+  const models = { ...cfg.agents?.defaults?.models };
+  models[NVIDIA_DEFAULT_MODEL_REF] = {
+    ...models[NVIDIA_DEFAULT_MODEL_REF],
+    alias: models[NVIDIA_DEFAULT_MODEL_REF]?.alias ?? "NVIDIA",
+  };
+  const defaultProvider = buildNvidiaProvider();
+  return applyProviderConfigWithDefaultModels(cfg, {
+    agentModels: models,
+    providerId: "nvidia",
+    api: "openai-completions",
+    baseUrl: defaultProvider.baseUrl,
+    defaultModels: defaultProvider.models ?? [],
+    defaultModelId: NVIDIA_DEFAULT_MODEL_ID,
+  });
+}
+
+export function applyNvidiaConfig(cfg: OpenClawConfig): OpenClawConfig {
+  const next = applyNvidiaProviderConfig(cfg);
+  const existingModel = next.agents?.defaults?.model;
+  return {
+    ...next,
+    agents: {
+      ...next.agents,
+      defaults: {
+        ...next.agents?.defaults,
+        model: {
+          ...(existingModel && "fallbacks" in (existingModel as Record<string, unknown>)
+            ? {
+                fallbacks: (existingModel as { fallbacks?: string[] }).fallbacks,
+              }
+            : undefined),
+          primary: NVIDIA_DEFAULT_MODEL_REF,
         },
       },
     },

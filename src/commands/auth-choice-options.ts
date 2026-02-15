@@ -155,6 +155,12 @@ const AUTH_CHOICE_GROUP_DEFS: {
     choices: ["cloudflare-ai-gateway-api-key"],
   },
   {
+    value: "nvidia",
+    label: "NVIDIA",
+    hint: "GLM-5, Llama 3.1 Nemotron",
+    choices: ["nvidia-api-key"],
+  },
+  {
     value: "custom",
     label: "Custom Provider",
     hint: "Any OpenAI or Anthropic compatible endpoint",
@@ -291,11 +297,8 @@ const BASE_AUTH_CHOICE_OPTIONS: ReadonlyArray<AuthChoiceOption> = [
     label: "MiniMax M2.5 (CN)",
     hint: "China endpoint (api.minimaxi.com)",
   },
-  {
-    value: "minimax-api-lightning",
-    label: "MiniMax M2.5 Lightning",
-    hint: "Faster, higher output cost",
-  },
+  { value: "minimax-api-lightning", label: "MiniMax M2.5 Lightning", hint: "Faster, higher output cost" },
+  { value: "nvidia-api-key", label: "NVIDIA API key" },
   { value: "custom-api-key", label: "Custom Provider" },
 ];
 
