@@ -1,0 +1,49 @@
+# System Files
+.DS_Store
+Thumbs.db
+
+# Environments
+.env
+.env.local
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDEs
+.vscode/
+.idea/
+
+# Keys
+*.key
+*.pem
+*.cert
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Private Data (IMPORTANT: Keep your sessions private)
+session_logs/
+!examples/session_logs/
+.context/memories/session_logs/
+*.session.md
+
+# Agent State (NEVER commit - contains sensitive paths/data)
+.agent/state/
+.agent/inputs/
+.agent/graphrag/
+*manifest*.json
+*cache*.json
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+TAG_INDEX_*.md

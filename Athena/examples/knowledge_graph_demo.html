@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Knowledge Graph Demo | Athena</title>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        body { margin: 0; padding: 0; background: #1a1a2e; font-family: 'Segoe UI', sans-serif; }
+        #graph { width: 100vw; height: 100vh; }
+        #info { position: fixed; top: 20px; left: 20px; color: #eee; background: rgba(0,0,0,0.8); 
+                padding: 20px; border-radius: 10px; max-width: 320px; }
+        h2 { margin: 0 0 12px 0; color: #4ecdc4; }
+        p { margin: 8px 0; font-size: 14px; line-height: 1.5; }
+        .legend { margin-top: 15px; padding-top: 15px; border-top: 1px solid #444; }
+        .legend-item { display: flex; align-items: center; margin: 5px 0; font-size: 12px; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h2>🧠 Knowledge Graph</h2>
+        <p>Every concept, file, and protocol becomes a <strong>node</strong>. Related ideas connect via <strong>edges</strong>.</p>
+        <p>This enables <strong>cross-domain pattern matching</strong> — the AI can traverse from "pricing strategy" to "negotiation tactics" because the graph knows they're related.</p>
+        <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#4ecdc4"></div>Core Concepts</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ff6b6b"></div>Protocols</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffe66d"></div>Frameworks</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#95e1d3"></div>Case Studies</div>
+        </div>
+    </div>
+    <div id="graph"></div>
+    <script>
+        // Demo data - illustrative, not real
+        const nodes = new vis.DataSet([
+            // Core hub
+            {id: 'core', label: 'Core Identity', color: '#ffffff', size: 35},
+            
+            // Concepts
+            {id: 'laws', label: 'Laws #0-4', color: '#4ecdc4', size: 25},
+            {id: 'reasoning', label: 'Reasoning Standards', color: '#4ecdc4', size: 20},
+            {id: 'calibration', label: 'Calibration', color: '#4ecdc4', size: 18},
+            {id: 'pattern', label: 'Pattern Matching', color: '#4ecdc4', size: 22},
+            
+            // Protocols
+            {id: 'p-decision', label: 'Decision Protocol', color: '#ff6b6b', size: 18},
+            {id: 'p-research', label: 'Research Loop', color: '#ff6b6b', size: 16},
+            {id: 'p-analysis', label: 'Deep Analysis', color: '#ff6b6b', size: 17},
+            {id: 'p-baseline', label: 'Baseline Anchoring', color: '#ff6b6b', size: 15},
+            
+            // Frameworks
+            {id: 'f-business', label: 'Business Frameworks', color: '#ffe66d', size: 20},
+            {id: 'f-pricing', label: 'Pricing Strategy', color: '#ffe66d', size: 15},
+            {id: 'f-negotiation', label: 'Negotiation', color: '#ffe66d', size: 14},
+            {id: 'f-arbitrage', label: 'Arbitrage Patterns', color: '#ffe66d', size: 16},
+            
+            // Case Studies
+            {id: 'cs-market', label: 'Market Analysis', color: '#95e1d3', size: 14},
+            {id: 'cs-career', label: 'Career Strategy', color: '#95e1d3', size: 13},
+            {id: 'cs-risk', label: 'Risk Management', color: '#95e1d3', size: 15},
+        ]);
+        
+        const edges = new vis.DataSet([
+            // Core connections
+            {from: 'core', to: 'laws'},
+            {from: 'core', to: 'reasoning'},
+            {from: 'core', to: 'calibration'},
+            {from: 'laws', to: 'pattern'},
+            
+            // Protocol connections
+            {from: 'reasoning', to: 'p-decision'},
+            {from: 'reasoning', to: 'p-research'},
+            {from: 'pattern', to: 'p-analysis'},
+            {from: 'calibration', to: 'p-baseline'},
+            
+            // Framework connections
+            {from: 'p-decision', to: 'f-business'},
+            {from: 'f-business', to: 'f-pricing'},
+            {from: 'f-business', to: 'f-negotiation'},
+            {from: 'f-pricing', to: 'f-arbitrage'},
+            {from: 'p-baseline', to: 'f-pricing'},
+            
+            // Case study connections
+            {from: 'f-arbitrage', to: 'cs-market'},
+            {from: 'f-negotiation', to: 'cs-career'},
+            {from: 'p-analysis', to: 'cs-risk'},
+            {from: 'cs-risk', to: 'laws'},
+            
+            // Cross-domain links (the magic)
+            {from: 'p-baseline', to: 'cs-career'},
+            {from: 'pattern', to: 'f-arbitrage'},
+            {from: 'cs-market', to: 'f-negotiation'},
+        ]);
+        
+        const container = document.getElementById('graph');
+        const data = { nodes: nodes, edges: edges };
+        const options = {
+            nodes: { 
+                shape: 'dot', 
+                font: { size: 12, color: '#ffffff' }, 
+                borderWidth: 2, 
+                shadow: true 
+            },
+            edges: { 
+                width: 2, 
+                color: { color: '#4a4a6a', highlight: '#4ecdc4' }, 
+                smooth: { type: 'continuous' } 
+            },
+            physics: {
+                forceAtlas2Based: {
+                    gravitationalConstant: -50,
+                    centralGravity: 0.008,
+                    springLength: 120,
+                    springConstant: 0.04
+                },
+                solver: 'forceAtlas2Based',
+                stabilization: { iterations: 200 }
+            },
+            interaction: { hover: true }
+        };
+        
+        new vis.Network(container, data, options);
+    </script>
+</body>
+</html>

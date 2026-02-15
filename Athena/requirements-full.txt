@@ -1,0 +1,22 @@
+# Athena SDK - Full Dependencies
+# Install: pip install -r requirements-full.txt
+#
+# These enable vector search, reranking, and multi-model support.
+
+# Core (already in requirements.txt)
+python-dotenv>=1.0.0
+requests>=2.31.0
+
+# Vector Search & Embeddings
+google-generativeai>=0.3.0
+supabase>=2.0.0
+
+# Reranking (optional, for improved search quality)
+sentence-transformers>=2.2.0
+torch>=2.0.0
+
+# Schema validation
+pydantic>=2.0.0
+
+# MCP Server (Model Context Protocol)
+fastmcp>=2.0.0
