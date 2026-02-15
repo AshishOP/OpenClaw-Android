@@ -52,7 +52,7 @@ echo "Setting up OpenClaw..."
 if ! command -v pnpm &> /dev/null; then
     npm install -g pnpm
 fi
-pnpm install
+pnpm install --network-concurrency 1
 
 # Build OpenClaw
 echo "Building OpenClaw..."
