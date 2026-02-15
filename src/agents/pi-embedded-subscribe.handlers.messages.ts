@@ -99,6 +99,13 @@ export function handleMessageUpdate(
     content,
   });
 
+  const reasoningContentDelta =
+    typeof assistantRecord?.reasoning_content === "string" ? assistantRecord.reasoning_content : "";
+  if (reasoningContentDelta && ctx.state.streamReasoning) {
+    ctx.state.reasoningBuffer = (ctx.state.reasoningBuffer ?? "") + reasoningContentDelta;
+    ctx.emitReasoningStream(ctx.state.reasoningBuffer);
+  }
+
   let chunk = "";
   if (evtType === "text_delta") {
     chunk = delta;
@@ -236,7 +243,10 @@ export function handleMessageEnd(
   });
   const rawThinking =
     ctx.state.includeReasoning || ctx.state.streamReasoning
-      ? extractAssistantThinking(assistantMessage) || extractThinkingFromTaggedText(rawText)
+      ? extractAssistantThinking(assistantMessage) ||
+        extractThinkingFromTaggedText(rawText) ||
+        ctx.state.reasoningBuffer ||
+        ""
       : "";
   const formattedReasoning = rawThinking ? formatReasoningMessage(rawThinking) : "";
   const trimmedText = text.trim();

@@ -54,6 +54,7 @@ export function subscribeEmbeddedPiSession(params: SubscribeEmbeddedPiSessionPar
     lastStreamedAssistantCleaned: undefined,
     emittedAssistantUpdate: false,
     lastStreamedReasoning: undefined,
+    reasoningBuffer: "",
     lastBlockReplyText: undefined,
     assistantMessageIndex: 0,
     lastAssistantTextMessageIndex: -1,
@@ -112,6 +113,7 @@ export function subscribeEmbeddedPiSession(params: SubscribeEmbeddedPiSessionPar
     state.emittedAssistantUpdate = false;
     state.lastBlockReplyText = undefined;
     state.lastStreamedReasoning = undefined;
+    state.reasoningBuffer = "";
     state.lastReasoningSent = undefined;
     state.suppressBlockChunks = false;
     state.assistantMessageIndex += 1;

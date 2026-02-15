@@ -173,6 +173,25 @@ function createOpenRouterHeadersWrapper(baseStreamFn: StreamFn | undefined): Str
 }
 
 /**
+ * Create a streamFn wrapper that adds NVIDIA GLM specialized thinking params.
+ * Used for z-ai/glm5 and similar models that require chat_template_kwargs.
+ */
+function createNvidiaGlmExtraParamsWrapper(baseStreamFn: StreamFn | undefined): StreamFn {
+  const underlying = baseStreamFn ?? streamSimple;
+  return (model, context, options) =>
+    underlying(model, context, {
+      ...options,
+      // Pass through extra_body for the OpenAI client
+      extra_body: {
+        chat_template_kwargs: {
+          enable_thinking: true,
+          clear_thinking: false,
+        },
+      },
+    } as any);
+}
+
+/**
  * Apply extra params (like temperature) to an agent's streamFn.
  * Also adds OpenRouter app attribution headers when using the OpenRouter provider.
  *
@@ -207,6 +226,11 @@ export function applyExtraParamsToAgent(
   if (provider === "openrouter") {
     log.debug(`applying OpenRouter app attribution headers for ${provider}/${modelId}`);
     agent.streamFn = createOpenRouterHeadersWrapper(agent.streamFn);
+  }
+
+  if (provider === "nvidia" && (modelId === "z-ai/glm5" || modelId === "nvidia/glm-4-9b-chat")) {
+    log.debug(`applying NVIDIA GLM thinking params for ${provider}/${modelId}`);
+    agent.streamFn = createNvidiaGlmExtraParamsWrapper(agent.streamFn);
   }
 
   // Work around upstream pi-ai hardcoding `store: false` for Responses API.
