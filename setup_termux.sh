@@ -32,13 +32,14 @@ python --version
 # Setup Athena (Python backend)
 echo "Setting up Athena..."
 cd Athena
-if [ ! -d "venv" ]; then
-    python -m venv venv
+if [ -d "venv" ]; then
+    rm -rf venv
 fi
+python -m venv venv
 source venv/bin/activate
-pip install --upgrade pip
-# Install requirements with no-build-isolation if needed for some packages
-pip install -r requirements.txt || pip install --no-build-isolation -r requirements.txt
+pip install --upgrade pip setuptools wheel
+# Install requirements
+pip install -r requirements.txt
 
 # Initializing Athena Local DB
 echo "Initializing Athena Local DB..."
