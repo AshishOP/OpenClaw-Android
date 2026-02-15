@@ -151,5 +151,22 @@ export function resolveGatewayService(): GatewayService {
     };
   }
 
+  if (process.platform === "android") {
+    return {
+      label: "manual",
+      loadedText: "running",
+      notLoadedText: "stopped",
+      install: async () => {
+        throw new Error("Gateway service automatic install is not supported on Android/Termux. Please run gateway manually via `npm run dev` or `./openclaw.mjs gateway`.");
+      },
+      uninstall: async () => {},
+      stop: async () => {},
+      restart: async () => {},
+      isLoaded: async () => false,
+      readCommand: async () => null,
+      readRuntime: async () => "node",
+    };
+  }
+
   throw new Error(`Gateway service install not supported on ${process.platform}`);
 }

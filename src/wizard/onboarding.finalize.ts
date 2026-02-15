@@ -63,7 +63,9 @@ export async function finalizeOnboardingWizard(
   };
 
   const systemdAvailable =
-    process.platform === "linux" ? await isSystemdUserServiceAvailable() : true;
+    process.platform === "linux" && process.platform !== "android"
+      ? await isSystemdUserServiceAvailable()
+      : false;
   if (process.platform === "linux" && !systemdAvailable) {
     await prompter.note(
       "Systemd user services are unavailable. Skipping lingering checks and service install.",
@@ -90,7 +92,7 @@ export async function finalizeOnboardingWizard(
   let installDaemon: boolean;
   if (explicitInstallDaemon !== undefined) {
     installDaemon = explicitInstallDaemon;
-  } else if (process.platform === "linux" && !systemdAvailable) {
+  } else if (process.platform === "android") {
     installDaemon = false;
   } else if (flow === "quickstart") {
     installDaemon = true;
