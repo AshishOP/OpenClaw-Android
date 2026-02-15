@@ -22,6 +22,18 @@ export async function getMemorySearchManager(params: {
   purpose?: "default" | "status";
 }): Promise<MemorySearchManagerResult> {
   const resolved = resolveMemoryBackendConfig(params);
+
+  if (resolved.backend === "athena") {
+    try {
+      const { AthenaMemoryManager } = await import("./athena-manager.js");
+      const manager = await AthenaMemoryManager.create(params);
+      return { manager };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      log.warn(`athena memory unavailable: ${message}`);
+    }
+  }
+
   if (resolved.backend === "qmd" && resolved.qmd) {
     const statusOnly = params.purpose === "status";
     const cacheKey = buildQmdCacheKey(params.agentId, resolved.qmd);

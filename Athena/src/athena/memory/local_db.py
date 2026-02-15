@@ -261,3 +261,33 @@ class RpcBuilder:
         results.sort(key=lambda x: x['similarity'], reverse=True)
         
         return QueryResult(data=results[:limit], error=None)
+
+if __name__ == "__main__":
+    import sys
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Athena Local DB CLI")
+    parser.add_argument("--db", type=str, default="athena_memory.db", help="Path to SQLite DB")
+    subparsers = parser.add_subparsers(dest="command")
+
+    # Search command
+    search_parser = subparsers.add_parser("search")
+    search_parser.add_argument("--func", type=str, required=True, help="RPC function name (e.g. search_sessions)")
+    search_parser.add_argument("--embedding", type=str, required=True, help="JSON string of embedding vector")
+    search_parser.add_argument("--threshold", type=float, default=0.3)
+    search_parser.add_argument("--limit", type=int, default=5)
+
+    args = parser.parse_args()
+
+    if args.command == "search":
+        client = LocalSupabaseClient(args.db)
+        emb = json.loads(args.embedding)
+        res = client.rpc(args.func, {
+            "query_embedding": emb,
+            "match_threshold": args.threshold,
+            "match_count": args.limit
+        }).execute()
+        
+        print(json.dumps(res.data))
+    else:
+        parser.print_help()

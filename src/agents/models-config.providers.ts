@@ -644,6 +644,15 @@ export function buildNvidiaProvider(): ProviderConfig {
         maxTokens: 4096,
       },
       {
+        id: "nvidia/glm-4-9b-chat",
+        name: "NVIDIA GLM-4 9B Chat",
+        reasoning: false,
+        input: ["text"],
+        cost: NVIDIA_DEFAULT_COST,
+        contextWindow: 8192,
+        maxTokens: 4096,
+      },
+      {
         id: "nvidia/mistral-nemo-minitron-8b-8k-instruct",
         name: "NVIDIA Mistral NeMo Minitron 8B Instruct",
         reasoning: false,
